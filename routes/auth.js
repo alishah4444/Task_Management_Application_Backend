@@ -7,12 +7,12 @@ const generateToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expires
 
 // Register
 router.post('/register', async (req, res) => {
-	const { email, password } = req.body;
+	const { email, password, name } = req.body;
 	try {
 		let user = await User.findOne({ email });
 		if (user) return res.status(400).json({ message: 'User already exists' });
 
-		user = new User({ email, password });
+		user = new User({ email, password, name });
 		await user.save();
 
 		res.status(201).json({ token: generateToken(user._id) });
